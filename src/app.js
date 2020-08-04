@@ -50,7 +50,7 @@ function renderGraph() {
         .data(graph.nodes).enter()
         .append("circle")
         .attr("class", d => {
-          return "node " + d.label
+          return "node " + d.category
         })
         .attr("r", 10)
         .call(force.drag);

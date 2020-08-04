@@ -33,13 +33,13 @@ function getGraph() {
   var session = driver.session();
   return session.run(
     'MATCH (l:Location) \
-    RETURN l.label AS location \
+    RETURN l.label AS label, l.category AS category \
     LIMIT toInteger($limit)', {limit : 200})
     .then(results => {
       session.close();
       var nodes = [], rels = [], i = 0;
       results.records.forEach(res => {
-        nodes.push({title: res.get('location'), label: 'location'});
+        nodes.push({title: res.get('label'), label: 'label', category : res.get('category')});
         var target = i;
         i++;
       });
