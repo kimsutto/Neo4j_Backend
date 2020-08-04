@@ -10,6 +10,19 @@ $(function () {
   });
 });
 
+function showDetail(label) {
+  api
+    .getDetail(label)
+    .then(location => {
+      if (!location) return;
+
+      $("#title").text(location.label);
+      var $list = $("#crew").empty();
+      $list.append($("<li>" + "분류 : " + location.category + "</li> " + "<li>" + "주소 : " +location.address + "</li>" + "<li>" + "위도 : " + location.latitude + "</li>" + "<li>" + "경도 : " + location.longitude + "</li>"));
+    }, "json");
+}
+
+
 function search() {
   var query = $("#search").find("input[name=search]").val();
   api
@@ -21,12 +34,14 @@ function search() {
         locations.forEach(Location => {
           $("<tr><td class='location'>" + Location.label + "</td><td>" + Location.category + "</td><td>" + Location.total + "</td></tr>").appendTo(t)
             .click(function() {
-              //popup
+              showDetail($(this).find("td.location").text());
             })
         });
       }
     });
 }
+
+
 
 function renderGraph() {
   var width = 800, height = 800;

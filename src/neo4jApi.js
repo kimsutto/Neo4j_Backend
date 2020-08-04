@@ -28,6 +28,27 @@ function searchLocations(queryString) {
     });
 }
 
+function getDetail(label) {
+  var session = driver.session();
+  return session
+    .run(
+      'MATCH (location:Location) \
+      WHERE location.label =~ $label \
+      RETURN location LIMIT 1', {label})
+    .then(result => {
+      session.close();
+
+      if (_.isEmpty(result.records))
+        return null;
+
+      var record = result.records[0];
+      return new Location(record.get('location'));
+    })
+    .catch(error => {
+      session.close();
+      throw error;
+    });
+}
 
 function getGraph() {
   var session = driver.session();
@@ -49,5 +70,6 @@ function getGraph() {
 }
 
 exports.searchLocations = searchLocations;
+exports.getDetail = getDetail;
 exports.getGraph = getGraph;
 
