@@ -10,6 +10,10 @@ $(function () {
   });
 });
 
+function stringNumberToInt(stringNumber){
+  return parseInt(stringNumber.replace(/,/g , ''));
+}
+
 function showDetail(label) {
   api
     .getDetail(label)
@@ -67,7 +71,11 @@ function renderGraph() {
         .attr("class", d => {
           return "node " + d.category
         })
-        .attr("r", 10)
+        //.attr("r", 10)
+        .attr("r", d => {
+          //console.log(stringNumberToInt(d.total)/100000);
+          return stringNumberToInt(d.total)/100000
+        })
         .call(force.drag);
 
       node.append("title")
@@ -76,7 +84,7 @@ function renderGraph() {
         });
 
       force.on("tick", () => {
-        
+        /*
         link.attr("x1", d => {
           return d.source.x;
         }).attr("y1", d => {
@@ -85,7 +93,7 @@ function renderGraph() {
           return d.target.x;
         }).attr("y2", d => {
           return d.target.y;
-        });
+        });*/
 
         node.attr("cx", d => {
           return d.x;
